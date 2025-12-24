@@ -1,0 +1,39 @@
+name: GCP SRE CI/CD (OIDC)
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "app/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT: "project-fb1dd99f-f405-4af0-8cc"
+
+    steps:
+      # Checkout repo
+      - uses: actions/checkout@v4
+
+      # Authenticate to GCP via OIDC
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_NAME/providers/PROVIDER_NAME'
+          service_account: 'demo-ci-cd-sa@PROJECT_ID.iam.gserviceaccount.com'
+
+      # Set up Docker to authenticate with GCR using OIDC
+      - name: Configure Docker for GCR
+        run: |
+          gcloud auth configure-docker
+
+      # Build Docker image
+      - name: Build Docker Image
+        run: |
+          docker build -t gcr.io/${{ env.GCP_PROJECT }}/demo-api app/
+
+      # Push Docker image
+      - name: Push Docker Image
+        run: |
+          docker push gcr.io/${{ env.GCP_PROJECT }}/demo-api
