@@ -9,3 +9,9 @@
     - Login: ```gcloud auth login --no-launch-browser``` and enter the verification code from browser
     - Set project: ```gcloud config set project <PROJECT_ID>```
     - Set region: ```gcloud config set run/region us-central1```
+
+
+## Common Commands
+- ```gcloud projects list```
+- ```gcloud iam service-accounts list```
+- ```gcloud config get-value project```
