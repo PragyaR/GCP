@@ -3,7 +3,7 @@
 ## Setup
 1. From gcloud CLI, enable Services: ```gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com monitoring.googleapis.com logging.googleapis.com```
 2. terraform init
-3. Create "demo-ci-cd-sa" service account on GCP with Cloud Run Admin and Artifact Registry Writer permissions.
+3. Create "demo-ci-cd-sa" service account on GCP with Cloud Run Admin and Artifact Registry Create-on-Push Writer permissions.
 4. To use OIDC authn from GitHub action pipeline,
     - Create Workload Identity Pool:   
     ```gcloud iam workload-identity-pools create github-pool --project="<PROJECT_ID>" --location="global" --display-name="GitHub Actions Pool"```
