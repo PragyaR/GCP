@@ -33,7 +33,7 @@ jobs:
       # Build Docker image
       - name: Build Docker Image
         run: |
-          docker build -t gcr.io/${{ env.GCP_PROJECT }}/demo-api app/
+          docker build -t gcr.io/${{ env.GCP_PROJECT }}/demo-api gcp-sre-platform-demo/app/
 
       # Push Docker image
       - name: Push Docker Image
