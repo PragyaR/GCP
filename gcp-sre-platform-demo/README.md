@@ -16,4 +16,9 @@
 6. Before apply, set Quota project for billing: ```gcloud auth application-default set-quota-project <PROJECT_ID>``` or ```$env:GOOGLE_CLOUD_QUOTA_PROJECT=<PROJECT_ID>```
 7. Post apply, run to verify what was created: ```terraform state list```
 
+## Running the app
+1. Ensure the docker image is deployed via the ci-cd pipeline and cloud run app is deployed via terraform.
+2. Get the service URL by running: ```gcloud run services describe demo-api```
+3. 
+
 
