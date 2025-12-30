@@ -2,4 +2,6 @@
 resource "google_compute_network" "vpc" {
   name                    = "sre-vpc"
   auto_create_subnetworks = true
+
+  depends_on = [google_project_service.compute]
 }

@@ -45,16 +45,37 @@ resource "google_monitoring_alert_policy" "high_error_rate" {
   combiner = "OR"
 
   conditions {
-    display_name = "5xx errors"
+    display_name = "5xx error rate > 1%"
+
     condition_threshold {
+      # NUMERATOR: 5xx requests
       filter = <<EOT
 metric.type="run.googleapis.com/request_count"
 resource.type="cloud_run_revision"
 metric.label.response_code_class="5xx"
 EOT
+      # Alert if error rate > 1% over 2 minutes
       comparison      = "COMPARISON_GT"
-      threshold_value = 1
+      threshold_value = 0.01
       duration        = "120s"
+
+      aggregations {
+        alignment_period     = "60s"
+        per_series_aligner   = "ALIGN_RATE"
+        cross_series_reducer = "REDUCE_SUM"
+      }
+
+      # DENOMINATOR: all requests
+      denominator_filter = <<EOT
+metric.type="run.googleapis.com/request_count"
+resource.type="cloud_run_revision"
+EOT
+
+      denominator_aggregations {
+        alignment_period     = "60s"
+        per_series_aligner   = "ALIGN_RATE"
+        cross_series_reducer = "REDUCE_SUM"
+      }
     }
   }
 
