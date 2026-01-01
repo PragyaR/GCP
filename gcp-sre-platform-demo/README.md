@@ -9,10 +9,14 @@
     - Login: ```gcloud auth login --no-launch-browser``` and enter the verification code from browser
     - Set project: ```gcloud config set project <PROJECT_ID>```
     - Set region: ```gcloud config set run/region us-central1```
+5. Install TFLint to catch any semantic errors (Optional)
+    - Run ```choco install tflint``` to install
+    - Run ```tflint --version``` to verify the installation
+
 
 ## App setup
 1. From gcloud CLI, enable Services: ```gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com monitoring.googleapis.com logging.googleapis.com cloudresourcemanager.googleapis.com serviceusage.googleapis.com iam.googleapis.com compute.googleapis.com```
-2. terraform init
+2. Run ```terraform init``` and ```tflint --init```
 3. Create "demo-ci-cd-sa" service account on GCP with Cloud Run Admin and Artifact Registry Create-on-Push Writer permissions.
 4. To use OIDC authn from GitHub action pipeline,
     - Create Workload Identity Pool:   
@@ -23,6 +27,7 @@
     ```gcloud iam service-accounts add-iam-policy-binding <SA_NAME>@<PROJECT_ID>.iam.gserviceaccount.com --role="roles/iam.workloadIdentityUser" --member="principalSet://iam.googleapis.com/projects/<PROJECT_NUMBER>/locations/global/workloadIdentityPools/<WORKLOAD_IDENTITY_POOL_NAME>/attribute.repository/<GITHUB_USERNAME>/<REPO_NAME>"```
 5. Before running the terraform plan, set the GCP Application Default Credential (ADC). The file is stored at "%APPDATA%\gcloud\application_default_credentials.json":    
 ```gcloud auth application-default login --no-launch-browser```
+6. Run ```terraform validate``` `, ```tflint``` and then ```terraform plan```.
 6. Before apply, set Quota project for billing: ```gcloud auth application-default set-quota-project <PROJECT_ID>``` or ```$env:GOOGLE_CLOUD_QUOTA_PROJECT=<PROJECT_ID>```
 7. Post apply, run to verify what was created: ```terraform state list```
 

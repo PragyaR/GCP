@@ -4,9 +4,11 @@ variable "project_id" {
 }
 variable "region" {
   default = "us-central1"
+  type    = string
 }
 variable "service_name" {
   default = "demo-api"
+  type    = string
 }
 variable "billing_account_id" {
   description = "GCP billing account ID (e.g. 000000-000000-000000)"
