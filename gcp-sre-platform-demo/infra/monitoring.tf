@@ -1,12 +1,12 @@
 # Monitoring configuration for Cloud Run service
 resource "google_monitoring_service" "cloudrun" {
-  service_id = "${var.service_name}-service"
+  service_id   = "${var.service_name}-service"
   display_name = "Demo API Cloud Run Service"
 
   basic_service {
     service_type = "CLOUD_RUN"
     service_labels = {
-      location = var.region
+      location     = var.region
       service_name = var.service_name
     }
   }
@@ -79,7 +79,7 @@ EOT
     }
   }
 
-  notification_channels = []                    # Add your notification channel IDs here
+  notification_channels = [] # Add your notification channel IDs here
 }
 
 # Alerting policy for SLO burn rate

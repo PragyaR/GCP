@@ -32,6 +32,6 @@ resource "google_monitoring_notification_channel" "email" {
   display_name = "SRE Demo Budget Email"
   type         = "email"
   labels = {
-    email_address = "sre-demo-budget@example.com"         # Replace with your email address to send notifications to this email
+    email_address = "sre-demo-budget@example.com" # Replace with your email address to send notifications to this email
   }
 }
