@@ -12,7 +12,11 @@ resource "google_project_service" "required_apis" {
     "artifactregistry.googleapis.com",
     "logging.googleapis.com",
     "monitoring.googleapis.com",
-    "billingbudgets.googleapis.com"
+    "billingbudgets.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "serviceusage.googleapis.com",
+    "iam.googleapis.com",
+    "compute.googleapis.com"
   ])
 
   service            = each.key

@@ -112,7 +112,7 @@ This alert answers:
 
 ---
 
-## 🧪 Demo Scenario (Recommended)
+## 🧪 Demo Scenario
 
 1. Deploy container via CI/CD 
 2. Deploy infrastructure with Terraform
@@ -143,7 +143,7 @@ This alert answers:
 
 ---
 
-## 📈 Example Incident Outcome
+## 📈 Example Outcome
 
 After a 1000-request test:
 
@@ -168,7 +168,7 @@ This demonstrates **correct, expected SRE behavior**.
 
 * GitHub Actions uses **Workload Identity Federation**
 * No long-lived service account keys
-* Terraform and deployments run with least privilege
+* Terraform deployments use Application Default Credentials for login
 * Drift detection enforced via IaC
 
 ---
