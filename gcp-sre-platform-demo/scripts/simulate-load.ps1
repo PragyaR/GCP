@@ -22,7 +22,7 @@ for ($i = 1; $i -le $Requests; $i++) {
         }
     } catch {
     $errors++
-    Write-Host "Error:" $_.Exception.Message
+    #Write-Host "Error:" $_.Exception.Message
 }
     Start-Sleep -Milliseconds $DelayMs
 }

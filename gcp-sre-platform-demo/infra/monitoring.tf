@@ -79,7 +79,7 @@ EOT
     }
   }
 
-  notification_channels = []
+  notification_channels = []                    # Add your notification channel IDs here
 }
 
 # Alerting policy for SLO burn rate

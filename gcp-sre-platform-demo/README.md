@@ -19,6 +19,14 @@
 ## Running the app
 1. Ensure the docker image is deployed via the ci-cd pipeline and cloud run app is deployed via terraform.
 2. Get the service URL by running: ```gcloud run services describe demo-api```
-3. 
+3. Perform a curl on the service URL to verify the service is up and running.
+4. Run the simulate-load.ps1 script from the scripts folder to simulate an app returning occasional errors. Check the metrics and logs on the portal.
+5. To trigger alerts, temporarily increase the error rate for the api -  
+```gcloud run services update demo-api --update-env-vars ERROR_RATE=0.5``` and execute   
+```\simulate-load.ps1 -Requests 1000 -DelayMs 100 -ServiceUrl <service url>```
+
+
+## Results
+In this demo-ap- application, we injected a 50% error rate and generated sustained traffic. The high error-rate alert fired because the 5xx ratio exceeded 1% for over two minutes. The SLO burn-rate alert fired because we were consuming the 0.1% error budget at over 20× the allowed rate, meaning we’d exhaust the monthly budget in about a day. Both alerts are expected and demonstrate short-term and long-term reliability signals.
 
 
