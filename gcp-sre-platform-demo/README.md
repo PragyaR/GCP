@@ -1,6 +1,16 @@
 # GCP SRE PLATFORM DEMO PROJECT
 
-## Setup
+## Pre-req and installation on Windows
+1. Google Cloud Account having one Project with Owner permission.
+2. Install terraform
+3. Install Git
+4. Install and verify gcloud CLI  
+    - Install: ```choco install gcloudsdk -y```. Installs gcloud CLI, gsutil (CLI for GCS- Google Cloud Storage), bq (Big Query CLI).
+    - Login: ```gcloud auth login --no-launch-browser``` and enter the verification code from browser
+    - Set project: ```gcloud config set project <PROJECT_ID>```
+    - Set region: ```gcloud config set run/region us-central1```
+
+## App setup
 1. From gcloud CLI, enable Services: ```gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com monitoring.googleapis.com logging.googleapis.com cloudresourcemanager.googleapis.com serviceusage.googleapis.com iam.googleapis.com compute.googleapis.com```
 2. terraform init
 3. Create "demo-ci-cd-sa" service account on GCP with Cloud Run Admin and Artifact Registry Create-on-Push Writer permissions.
@@ -25,8 +35,8 @@
 ```gcloud run services update demo-api --update-env-vars ERROR_RATE=0.5``` and execute   
 ```\simulate-load.ps1 -Requests 1000 -DelayMs 100 -ServiceUrl <service url>```
 
-
-## Results
-In this demo-ap- application, we injected a 50% error rate and generated sustained traffic. The high error-rate alert fired because the 5xx ratio exceeded 1% for over two minutes. The SLO burn-rate alert fired because we were consuming the 0.1% error budget at over 20× the allowed rate, meaning we’d exhaust the monthly budget in about a day. Both alerts are expected and demonstrate short-term and long-term reliability signals.
-
-
+## Common Commands
+- ```gcloud projects list```
+- ```gcloud iam service-accounts list```
+- ```gcloud config get-value project```
+- ```gcloud auth application-default revoke```
