@@ -1,6 +1,13 @@
-infra/terraform.tfstate
-infra/terraform.tfstate.backup
+# Local .terraform directory
 infra/.terraform/
-infra/terraform.tfvars
+
+# Terraform state files
+infra/*.tfstate
+infra/*.tfstate.*
+
+# Log files
 infra/terraform.log
-infra/.terraform.lock.hcl
+
+# tfvars files
+infra/*.tfvars
+infra/*.tfvars.json
