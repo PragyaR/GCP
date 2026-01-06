@@ -18,7 +18,7 @@
 1. From gcloud CLI, enable Services: ```gcloud services enable run.googleapis.com artifactregistry.googleapis.com cloudbuild.googleapis.com monitoring.googleapis.com logging.googleapis.com cloudresourcemanager.googleapis.com serviceusage.googleapis.com iam.googleapis.com compute.googleapis.com```
 2. Run ```terraform init``` and ```tflint --init```
 3. Create "demo-ci-cd-sa" service account on GCP with Cloud Run Admin and Artifact Registry Create-on-Push Writer permissions.
-4. For GitHub Actoin pipeline to push docker image to GCP using OIDC authn, do the following - 
+4. For GitHub Action pipeline to push docker image to GCP using OIDC authn, do the following - 
     - Create Workload Identity Pool:   
     ```gcloud iam workload-identity-pools create github-pool --project="<PROJECT_ID>" --location="global" --display-name="GitHub Actions Pool"```
     - Create a Provider   
@@ -34,7 +34,7 @@
 
 ## Running the app
 1. Ensure the docker image is deployed via the ci-cd pipeline and cloud run app is deployed via terraform.
-2. Get the service URL by running: ```gcloud run services describe demo-api```
+2. Get the service URL by running: ```gcloud run services describe demo-api``` or by running ```terraform output```
 3. Perform a curl on the service URL to verify the service is up and running.
 4. Run the simulate-load.ps1 script from the scripts folder to simulate an app returning occasional errors. Check the metrics and logs on the portal.
 5. To trigger alerts, temporarily increase the error rate for the api -  
