@@ -2,15 +2,9 @@
 
 This repository demonstrates a **production-grade SRE setup on Google Cloud Platform**, focused on **reliability engineering**, **error budgets**, and **alerting based on SLO burn rate** rather than raw metrics.
 
-It is designed as a **hands-on demo** suitable for:
-
-* SRE interviews
-* Reliability discussions
-* IaC + Observability walkthroughs
-
 ---
 
-## 🧱 Architecture Overview
+## Architecture Overview
 
 **Core components:**
 
@@ -32,7 +26,7 @@ Cloud Monitoring
 
 ---
 
-## 🎯 Design Goals (SRE Principles)
+## Design Goals (SRE Principles)
 
 * No click-ops (everything declarative)
 * Alerts tied to **user impact**, not raw errors
@@ -42,7 +36,7 @@ Cloud Monitoring
 
 ---
 
-## 🚀 Application Behavior
+## Application Behavior
 
 The demo API intentionally simulates failures to demonstrate observability and alerting.
 
@@ -54,7 +48,7 @@ The demo API intentionally simulates failures to demonstrate observability and a
 
 ---
 
-## 🔥 Failure Injection (Chaos Testing)
+## Failure Injection (Chaos Testing)
 
 You can dynamically change the error rate **without redeploying**:
 
@@ -70,7 +64,7 @@ Terraform remains the **source of truth** and will detect/revert drift if applie
 
 ---
 
-## 📊 Observability & Reliability
+## Observability & Reliability
 
 ### Availability SLO
 
@@ -112,7 +106,7 @@ This alert answers:
 
 ---
 
-## 🧪 Demo Scenario
+## Demo Scenario
 
 1. Deploy container via CI/CD 
 2. Deploy infrastructure with Terraform
@@ -143,7 +137,7 @@ This alert answers:
 
 ---
 
-## 📈 Example Outcome
+## Example Outcome
 
 After a 1000-request test:
 
@@ -164,16 +158,37 @@ This demonstrates **correct, expected SRE behavior**.
 
 ---
 
-## 🔐 CI/CD & Security
+## CI/CD & Security
 
 * GitHub Actions uses **Workload Identity Federation**
 * No long-lived service account keys
 * Terraform deployments use Application Default Credentials for login
 * Drift detection enforced via IaC
 
----
+## OIDC flow
+### Key components
 
-## 🧠 Key SRE Takeaways
+**GitHub Actions**         - Generates a **JWT token** signed by GitHub for the workflow           
+**OIDC provider in GCP**   - GCP trusts tokens issued by GitHub for your repo/workflow             
+**Workload Identity Pool** - Logical container for OIDC providers in GCP                           
+**Workload Identity Provider** - Maps GitHub OIDC claims (repo, branch) → GCP identities           **Service Account**            - The identity in GCP with the permissions (Cloud Run Admin, GCR write)
+
+### How it works (step-by-step)
+
+1. **GitHub Actions runs a workflow** (push to `main`)
+2. GitHub automatically generates a **JWT token** for this workflow.
+   * Claims include repo, branch, workflow, and job.
+3. The workflow calls `google-github-actions/auth@v1` step → sends the JWT to GCP **OIDC provider**.
+4. GCP verifies the token:
+   * Issuer: `https://token.actions.githubusercontent.com`
+   * Attributes: repository, workflow, branch match what the provider allows
+5. If verified, GCP issues a **short-lived access token** impersonating the **service account** (`demo-ci-cd-sa`)
+6. Terraform or Docker uses this token to:
+   * Push Docker image to GCR
+   * Deploy or update Cloud Run
+7. Token expires quickly (~1 hour), so no long-lived key exists anywhere
+
+## Key SRE Takeaways
 
 * Alerts are **SLO-aligned**, not metric-driven
 * Error budgets govern operational response
@@ -183,7 +198,7 @@ This demonstrates **correct, expected SRE behavior**.
 
 ---
 
-## 📌 Why this matters
+## Why this matters
 
 This repo demonstrates how real SRE teams:
 
